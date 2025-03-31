@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task Manager</title>
+    <!-- favicon -->
+    <link rel="shortcut icon" href="./Logo.png" type="image/png" />
+    <!-- font awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+    />
+    <!-- normalize css -->
+    <link rel="stylesheet" href="./normalize.css" />
+    <!-- main css -->
+    <link rel="stylesheet" href="./main.css" />
+    <!-- Sortable.js -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="nav-center">
+        <div class="nav-header">
+          <h1><i class="fas fa-tasks"></i> Task Manager</h1>
+        </div>
+        <div class="nav-actions">
+          <button class="btn" onclick="location.href='create-task.html'">
+            <i class="fas fa-plus"></i> New Task
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Dashboard -->
+    <div class="dashboard">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="filter-section">
+          <h4>Filters</h4>
+          <div class="filter-group">
+            <label for="priority-filter">Priority</label>
+            <select id="priority-filter" class="form-input">
+              <option value="All">All Priorities</option>
+              <option value="High">High Priority</option>
+              <option value="Medium">Medium Priority</option>
+              <option value="Low">Low Priority</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="status-filter">Status</label>
+            <select id="status-filter" class="form-input">
+              <option value="All">All Status</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Completed">Completed</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="stats-section">
+          <h4>Statistics</h4>
+          <div class="stat-item">
+            <span>Total Tasks</span>
+            <span id="total-tasks">0</span>
+          </div>
+          <div class="stat-item">
+            <span>Completed</span>
+            <span id="completed-tasks">0</span>
+          </div>
+          <div class="stat-item">
+            <span>In Progress</span>
+            <span id="in-progress-tasks">0</span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <div class="loading-text">Loading...</div>
+        <div class="tasks"></div>
+      </main>
+    </div>
+
+    <!-- Simple Theme Toggle Button -->
+    <button id="theme-toggle" class="theme-toggle">
+      <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- Notification Container -->
+    <div id="notification-container"></div>
+
+    <!-- task details modal -->
+    <div id="task-modal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <div id="task-details"></div>
+      </div>
+    </div>
+
+    <!-- axios -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
+      integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <!-- Sortable.js -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <!-- samples.js -->
+    <script src="./public/samples.js"></script>
+    <!-- app -->
+    <script src="./browser-app.js"></script>
+  </body>
+</html>

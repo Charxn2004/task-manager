@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Task</title>
+    <!-- favicon -->
+    <link rel="shortcut icon" href="./Logo.png" type="image/png" />
+    <!-- font awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+    />
+    <!-- normalize css -->
+    <link rel="stylesheet" href="./normalize.css" />
+    <!-- main css -->
+    <link rel="stylesheet" href="./main.css" />
+  </head>
+  <body>
+    <div class="container">
+      <form class="single-task-form">
+        <h4>Create New Task</h4>
+        <div class="form-control">
+          <label>Task Name</label>
+          <input type="text" name="name" class="task-input" />
+        </div>
+        <div class="form-control">
+          <label>Priority</label>
+          <select name="priority" class="priority-select">
+            <option value="Low">Low</option>
+            <option value="Medium" selected>Medium</option>
+            <option value="High">High</option>
+          </select>
+        </div>
+        <div class="form-control">
+          <label>Due Date</label>
+          <input type="datetime-local" name="reminder" class="reminder-input" />
+        </div>
+        <div class="form-control">
+          <label>Description</label>
+          <textarea name="description" class="task-description"></textarea>
+        </div>
+        <button type="submit" class="btn submit-btn">Create</button>
+        <div class="form-alert"></div>
+        <a href="index.html" class="btn back-link">Back to Tasks</a>
+      </form>
+    </div>
+
+    <!-- Theme Toggle Button -->
+    <button id="theme-toggle" class="theme-toggle">
+      <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- Notification Container -->
+    <div id="notification-container"></div>
+
+    <!-- axios -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
+      integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <!-- js -->
+    <script src="./create-task.js"></script>
+    <!-- Theme Toggle Script -->
+    <script>
+      // Theme Toggle Implementation
+      const themeToggleBtn = document.getElementById('theme-toggle')
+      const themeIcon = themeToggleBtn.querySelector('i')
+
+      function getPreferredTheme() {
+        return localStorage.getItem('theme') || 'light'
+      }
+
+      function applyTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme)
+        localStorage.setItem('theme', theme)
+        themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon'
+      }
+
+      themeToggleBtn.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'light'
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light'
+        applyTheme(newTheme)
+        
+        themeIcon.style.transform = 'rotate(360deg)'
+        setTimeout(() => {
+          themeIcon.style.transform = ''
+        }, 500)
+      })
+
+      // Initialize theme
+      applyTheme(getPreferredTheme())
+    </script>
+  </body>
+</html> 
