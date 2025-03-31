@@ -69,8 +69,10 @@ const loadTasks = async () => {
     tasks = tasksData
     updateStatistics()
     displayFilteredTasks()
+    checkReminders(tasks)
   } catch (error) {
-    tasksDOM.innerHTML = '<h5 class="empty-list">There was an error, please try later....</h5>'
+    console.error('Error loading tasks:', error)
+    tasksDOM.innerHTML = '<h5 class="empty-list">There was an error loading tasks. Please try again later.</h5>'
   }
   loadingDOM.style.visibility = 'hidden'
 }
@@ -272,53 +274,3 @@ setInterval(() => {
     displayFilteredTasks()
   }
 }, 60000)
-
-// ----- Simple Theme Toggle Implementation -----
-const themeToggleBtn = document.getElementById('theme-toggle')
-const themeIcon = themeToggleBtn.querySelector('i')
-
-// Check saved theme or use system preference
-function getPreferredTheme() {
-  const savedTheme = localStorage.getItem('theme')
-  if (savedTheme) {
-    return savedTheme
-  }
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-}
-
-// Apply theme
-function applyTheme(theme) {
-  // Set theme attribute on document
-  document.documentElement.setAttribute('data-theme', theme)
-  
-  // Save theme preference
-  localStorage.setItem('theme', theme)
-  
-  // Update icon
-  themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon'
-  
-  // Show notification
-  showNotification(`${theme.charAt(0).toUpperCase() + theme.slice(1)} mode activated ${theme === 'dark' ? '🌙' : '☀️'}`)
-}
-
-// Toggle theme
-themeToggleBtn.addEventListener('click', () => {
-  const currentTheme = document.documentElement.getAttribute('data-theme') || 'light'
-  const newTheme = currentTheme === 'light' ? 'dark' : 'light'
-  applyTheme(newTheme)
-  
-  // Add rotation animation
-  themeIcon.style.transform = 'rotate(360deg)'
-  setTimeout(() => {
-    themeIcon.style.transform = ''
-  }, 500)
-})
-
-// Initialize theme on page load
-document.addEventListener('DOMContentLoaded', () => {
-  const theme = getPreferredTheme()
-  applyTheme(theme)
-})
-
-// Apply theme immediately (in case DOMContentLoaded already fired)
-applyTheme(getPreferredTheme())
