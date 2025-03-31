@@ -26,9 +26,17 @@ const sortable = new Sortable(tasksDOM, {
     try {
       await Promise.all(updates.map(update => 
         axios.patch(`/api/v1/tasks/${update.id}`, { order: update.order })
+          .catch(error => {
+            console.error(`Failed to update task ${update.id}:`, error)
+            throw error
+          })
       ))
+      showNotification('Task order updated successfully')
     } catch (error) {
-      showNotification('Failed to update task order', 'warning')
+      console.error('Failed to update task order:', error)
+      showNotification('Failed to update task order. Please try again.', 'warning')
+      // Reload tasks to restore original order
+      await loadTasks()
     }
   }
 })
@@ -164,8 +172,11 @@ const displayFilteredTasks = () => {
       const progress = calculateProgress(dueDate);
       const progressBarClass = getProgressBarClass(progress);
       
+      // Format the date to show only the date part
+      const formattedDate = dueDate ? new Date(dueDate).toLocaleDateString() : 'No due date';
+      
       return `<div class="single-task ${completed && 'task-completed'}" data-id="${taskID}">
-        <p class="due-date">Due: ${new Date(dueDate).toLocaleDateString()}</p>
+        <p class="due-date">Due: ${formattedDate}</p>
         <div class="task-header">
           <div class="task-title-group">
             <h5><span><i class="far fa-check-circle"></i></span>${name}</h5>
@@ -250,12 +261,15 @@ formDOM.addEventListener('submit', async (e) => {
   const reminderDate = reminderInputDOM.value
 
   try {
+    // Format the date to include only the date part (YYYY-MM-DD)
+    const formattedDate = reminderDate ? new Date(reminderDate).toISOString().split('T')[0] : null
+    
     await axios.post('/api/v1/tasks', { 
       name,
       priority,
       reminder: {
-        date: reminderDate,
-        enabled: !!reminderDate
+        date: formattedDate,
+        enabled: !!formattedDate
       }
     })
     await loadTasks()
@@ -264,7 +278,8 @@ formDOM.addEventListener('submit', async (e) => {
     reminderInputDOM.value = ''
     showNotification('Task added successfully')
   } catch (error) {
-    showNotification('Error, please try again', 'warning')
+    console.error('Error creating task:', error)
+    showNotification('Error creating task. Please try again.', 'warning')
   }
 })
 
