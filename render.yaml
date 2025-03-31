@@ -12,4 +12,5 @@ services:
       - key: NODE_ENV
         value: production
     healthCheckPath: /
-    autoDeploy: true 
+    autoDeploy: true
+    port: 10000 
